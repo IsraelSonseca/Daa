@@ -1,30 +1,20 @@
 from collections import deque
 
-
-def bfsAux(g, visited, v):
+def bfsAux(g, greatWAY, v):
     q = deque()
-    visited[v] = True
-    print(v, end=" ")
     q.append(v)
     while q:
         aux = q.popleft()
         for adj in g[aux]:
-            if not visited[adj]:
-                visited[adj] = True
-                print(adj, end=" ")
-                q.append(adj)
+            if greatWAY[adj[0]]< greatWAY[aux]+adj[1]:
+                greatWAY[adj[0]]=greatWAY[aux]+adj[1]
+            q.append(adj[0])
 
-
-def bfs(g):
+def bfsGreatestDistance(g, i):
     n = len(g)
-    visited = [False] * n
-    for v in range(1, n):
-        if not visited[v]:
-            bfsAux(g, visited, v)
-
-
-
-
+    greatWay = [0] * n
+    bfsAux(g, greatWay, i)
+    return max(greatWay)
 
 N, M= map(int, input().strip().split())
 g=[]
@@ -37,37 +27,14 @@ for i in range(N):
 for i in range(M):
     a, b, c = map(int, input().strip().split())
     g[a].append((b, c))
-    posiblesRaices.remove(b)
+    if b in posiblesRaices:
+        posiblesRaices.remove(b)
 
 
 largestDistance=0
 
 
-def bfsGreatestDistance(g, i):
-    pass
-from collections import deque
 
-def bfsAux(g, visited, v):
-    q = deque()
-    visited[v] = True
-    q.append(v)
-    while q:
-        aux = q.popleft()
-        for adj in g[aux]:
-            if not visited[adj]:
-                visited[adj] = True
-                q.append(adj)
-
-
-def bfsNumCompConexas(g):
-    nComConexa=0
-    n = len(g)
-    visited = [False] * n
-    for v in range(0,n):
-        if not visited[v]:
-            nComConexa+=1
-            bfsAux(g, visited, v)
-    return nComConexa
 
 for i in posiblesRaices:
     longestFromI=bfsGreatestDistance(g,i)
